@@ -1,0 +1,70 @@
+APACHE HTTP SERVER 
+2.4.27 
+*) SECURITY: CVE-2017-9789 (cve.mitre.org)
+     mod_http2: Read after free. When under stress, closing many connections,
+     the HTTP/2 handling code would sometimes access memory after it has been
+     freed, resulting in potentially erratic behaviour.
+     [Stefan Eissing]
+
+  *) SECURITY: CVE-2017-9788 (cve.mitre.org)
+     mod_auth_digest: Uninitialized memory reflection.  The value placeholder
+     in [Proxy-]Authorization headers type 'Digest' was not initialized or
+     reset before or between successive key=value assignments.
+     [William Rowe]
+
+  *) COMPATIBILITY: mod_lua: Remove the undocumented exported 'apr_table'
+     global variable when using Lua 5.2 or later. This was exported as a
+     side effect from luaL_register, which is no longer supported as of
+     Lua 5.2 which deprecates pollution of the global namespace.
+     [Rainer Jung]
+
+  *) COMPATIBILITY: mod_http2: Disable and give warning when using Prefork.
+     The server will continue to run, but HTTP/2 will no longer be negotiated.
+     [Stefan Eissing]
+
+  *) COMPATIBILITY: mod_proxy_fcgi: Revert to 2.4.20 FCGI behavior for the
+     default ProxyFCGIBackendType, fixing a regression with PHP-FPM. PR 61202.
+     [Jacob Champion, Jim Jagielski]
+
+  *) mod_lua: Improve compatibility with Lua 5.1, 5.2 and 5.3.
+     PR58188, PR60831, PR61245. [Rainer Jung]
+  
+  *) mod_http2: Simplify ready queue, less memory and better performance. Update
+     mod_http2 version to 1.10.7. [Stefan Eissing]
+  
+  *) Allow single-char field names inadvertently disallowed in 2.4.25.
+     PR 61220. [Yann Ylavic]
+
+  *) htpasswd / htdigest: Do not apply the strict permissions of the temporary
+     passwd file to a possibly existing passwd file. PR 61240. [Ruediger Pluem]
+
+  *) core: Avoid duplicate HEAD in Allow header.
+     This is a regression in 2.4.24 (unreleased), 2.4.25 and 2.4.26.
+     PR 61207. [Christophe Jaillet]
+2.2.34
+O novo módulo mod_proxy_balancer fornece serviços de carregamento de balenceamento para mod_proxy. O novo módulo mod_proxy_ajp oferece suporte para o Protocolo Apache JServ versão 1.3, usado pelo Apache Tomcat.
+Filtragem Inteligente (Smart Filtering)
+O mod_filter introduz configuração dinâmica para o filtro de saída de dados. Permitindo que os filtros sejam condicionalmente inseridos, baseando-se nos cabeçalhos Request ou Response ou em variáveis do ambiente, ele acaba com os problemas de dependências e pedidos da arquitetura 2.0.
+mod_authnz_ldap
+Este módulo é uma migração do mod_auth_ldap, da versão 2.0 para a estrutura 2.2 de Authn/Authz. As novas funcionalidades incluem o uso de atributos LDAP e filtros de procura complexos na diretriz Require.
+mod_info
+Adicionado um novo argumento ?config que mostra a configuração das diretrizes analisadas pelo Apache, incluindo o nome do arquivo e o número da linha. Esse módulo também mostra a ordem de todos os ganchos de pedidos (request hooks) e informações adicionais sobre a compilação, similar ao comando httpd -V.
+API do APR 1.0
+O Apache 2.2 utiliza a API do APR 1.0. Todas as funções e símbolos antigos foram removidos do APR e APR-Util. Para mais detalhes, visite o Website do APR.
+Registros de Erros de Conexão (logs)
+Uma nova função ap_log_cerror, foi adicionada para registrar erros que ocorrem na conexão do cliente. Quando documentado no diário de log, a mensagem inclui o endereço IP do cliente.
+Adicionado Gancho de Teste de Configuração
+Um novo gancho (hook), test_config foi adicionado para auxiliar módulos que querem executar códigos especiais apenas quando o usuário passa o parâmetro -t para o httpd.
+Ajustar o Stacksize dos "Threaded MPM's"
+Uma nova diretriz chamada ThreadStackSize, foi adicionada para ajustar o tamanho das stacks em todos os threadeds MPMs. Essa é uma prática necessário para alguns módulos de terceiros em plataformas com tamanhos de stacks pequenos por padrão.
+Negociação de Protocolo para filtros de saída
+No passado, todo filtro era responsável por garantir a geração de cabeçalhos de resposta correto que os afetava. Os filtros agora podem delegar o gerenciamento de protocolos comuns para mod_filter, usando chamadas de ap_register_output_filter_protocol ou ap_filter_protocol.
+
+NGINX 1.6 e 1.7 NGINX 1.6 foi bifurcado do ramo principal principal (1.5), que foi então renumerado para 1.7. Este é um ponto de verificação anual onde tomamos o ramo principal principal (característica) e garfo-lo para um ramo estável (sem novos recursos). Continuamos o desenvolvimento ativo no ramo renumado mainline.NGINX 1.6 foi bifurcado do ramo principal principal (1.5), que foi então renumerado para 1.7. Este é um ponto de verificação anual onde tomamos o ramo principal principal (característica) e garfo-lo para um ramo estável (sem novos recursos). Continuamos o desenvolvimento ativo no ramo renumado mainline.
+Na nomenclatura NGINX, "estável" significa que nenhum novo recurso é adicionado (o conjunto de recursos é estável). Somente as principais correções de erros estão comprometidas com essa versão.
+Desenvolvemos novos recursos e todas as correções de bugs no ramo principal. Nós operamos um processo de lançamento baseado no tempo, então você pode esperar para ver novos lançamentos principais, aproximadamente uma vez por mês, com versões excepcionais quando necessário. Ao longo do último ano, a linha principal viu a introdução do suporte SPDY 3.1, autenticação via subempreências, suporte a tickets de sessão SSL, suporte IPv6 para DNS e suporte ao protocolo PROXY. Integramos contribuições da comunidade para suporte SSL para uwsgi. Nós agendamos o registro de erros, adicionamos diretrizes de revalidação de cache, adicionamos pipelines de SMTP, adicionamos opções de buffer para FastCGI, suporte aprimorado para transmissão de MP4 e tratamento estendido de pedidos de transmissão de bytes para streaming e armazenamento em cache.
+Observe que o estável não significa mais confiável ou mais livre de erros. Na verdade, a linha principal é geralmente considerada como mais confiável, porque nós colocamos todas as correções de bugs para ele e não apenas correções críticas quanto ao ramo estável. Por outro lado, é improvável que mudanças no ramo estável afetem os módulos de terceiros. Não fazemos o mesmo compromisso em relação à linha principal, onde novos recursos podem afetar a operação de módulos de terceiros.
+
+WORDPRESS
+WordPress está engajado na comunidade hackerone. serão discutidos outros projetos como: BuddyPress, bbPress, GlotPress e WP-CLI. Até o momento 3.700 dolares foram repassados para 7 diferentes reports.
+Finalizando, essa semana saiu uma atualização de segurança do WordPress, a versão 4.7.5 ela contém  seis correções de segurança e segundo o WordPress está atualização deve ser  realizada imediatamente. Os updates estão relacionados a nova parceria com o hackerone, são falhas referente a XSS, Cross Site request Forgery e melhorias na XML-RPC API.
